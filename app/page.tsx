@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useRef } from 'react';
@@ -9,148 +10,74 @@ import { ReactLenis } from "lenis/react";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
-  const lenisRef = useRef();
-  const containerRef = useRef(null);
+const lenisRef = useRef();
+const containerRef = useRef(null);
 
-  useEffect(() => {
-    function update(time) {
-      lenisRef.current?.lenis?.raf(time * 1000);
-    }
+useEffect(() => {
+  function update(time) {
+    lenisRef.current?.lenis?.raf(time * 1000);
+  }
 
-    lenisRef.current?.lenis?.on("scroll",
-    ScrollTrigger.update);
-    gsap.ticker.add(update);
-    gsap.ticker.lagSmoothing(0);
+  lenisRef.current?.lenis?.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add(update);
+  gsap.ticker.lagSmoothing(0);
 
-    return () => gsap.ticker.remove(update);
-  }, []);
+  return () => gsap.ticker.remove(update);
+}, []);
 
-  useGSAP(
-    () => {
-      const sections = document.querySelectorAll
-      ("section");
+useGSAP(() => {
+  const sections = document.querySelectorAll("section");
 
-      sections.forEach((section, index) => {
-        const container = section.querySelector(".container");
-
-        gsap.to(container, {
-          rotation: 0,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top bottom",
-            end: "top 20%",
-            scrub: true,
-          },
-        });
-
-        if (index === sections.length - 1) return;
-
-        ScrollTrigger.create({
-          trigger: section,
-          start: "bottom bottom",
-          end: "bottom top",
-          pin: true,
-          pinSpacing: false,
-        });
-      });
-    },
-    { scope: containerRef },
-  );
+  sections.forEach((section, index) => {
+    // Set initial rotation
+    gsap.set(section, { rotation: 30 });
+    
+    ScrollTrigger.create({
+      trigger: "body",
+      start: "top top",
+      end: "bottom bottom",
+      scrub: true,
+      onUpdate: (self) => {
+        const sectionTop = section.offsetTop;
+        const scrollTop = window.pageYOffset;
+        const windowHeight = window.innerHeight;
+        
+        // Calculate distance from top of viewport
+        const distanceFromTop = sectionTop - scrollTop;
+        
+        // Calculate rotation based on distance (closer to top = less rotation)
+        const maxRotation = 30;
+        const rotationRange = windowHeight; // Distance over which rotation changes
+        let rotation = Math.max(0, Math.min(maxRotation, (distanceFromTop / rotationRange) * maxRotation));
+        
+        gsap.set(section, { rotation: rotation });
+      }
+    });
+  });
+},
+{ scope: containerRef});
 
   return (
     <>
-      <ReactLenis rootOptions={{autoRaf: false}} ref={lenisRef} /> 
-    <main ref={containerRef}>
-      <section className="one">
-        <div className="container bg-red-500">
-          <div className="col">
-            <h1 className="font-newsflash">
-            Entry Point
-            </h1>
-          </div>
-          <div className="col">
-            <p>
-            This is the main entry point of the application.
-            </p>
-          </div>
-        </div>
+    <ReactLenis root options={{autoRaf: false}} ref={lenisRef} />
+    <main 
+      ref={containerRef}
+      className="grid grid-cols-1"
+      style={{
+        gridTemplateRows: 'repeat(3, 200vh)'
+      }}
+    >
+      <section className="bg-red-500 flex items-center justify-center sticky top-0 h-screen">
+        <h1 className="font-newsflash text-9xl">1</h1>
       </section>
-      <section className="two">
-        <div className="container bg-blue-500">
-          <div className="col">
-            <h1 className="font-newsflash">
-            Features
-            </h1>
-          </div>
-          <div className="col">
-            <p>
-            Explore the various features of our application.
-            </p>
-          </div>
-        </div>
+      <section className="bg-blue-500 flex items-center justify-center sticky top-0 h-screen">
+        <h1 className="font-newsflash text-9xl">2</h1>
       </section>
-      <section className="three">
-        <div className="container bg-green-500">
-          <div className="col">
-            <h1 className="font-newsflash">
-            Contact Us
-            </h1>
-          </div>
-          <div className="col">
-            <p>
-            Get in touch with our team for more information.
-            </p>
-          </div>
-        </div>
+      <section className="bg-green-500 flex items-center justify-center sticky top-0 h-screen">
+        <h1 className="font-newsflash text-9xl">3</h1>
       </section>
-      <section className="four">
-        <div className="container bg-yellow-500">
-          <div className="col">
-            <h1 className="font-newsflash">
-            About Us
-            </h1>
-          </div>
-          <div className="col">
-            <p>
-            Learn more about our mission and values.
-            </p>
-          </div>
-        </div>
-      </section>
-      <section className="five">
-        <div className="container bg-purple-500">
-          <div className="col">
-            <h1 className="font-newsflash">
-            Services
-            </h1>
-          </div>
-          <div className="col">
-            <p>
-            Discover the range of services we offer to meet your needs.
-            </p>
-          </div>
-        </div>
-      </section>
-      <section className="six">
-        <div className="container bg-pink-500">
-          <div className="col">
-            <h1 className="font-newsflash">
-            Portfolio
-            </h1>
-          </div>
-          <div className="col">
-            <p>
-            Browse through our portfolio to see our past projects and achievements.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <footer>
-        <h1 className="font-newsflash">
-          Footer
-        </h1>
+      <footer className="bg-black text-white flex items-center justify-center h-screen relative">
+        <h1 className="font-newsflash text-6xl">Footer</h1>
       </footer>
     </main>
     </>
