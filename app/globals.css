@@ -74,6 +74,10 @@
   }
 }
 
+* {
+  cursor: crosshair !important;
+}
+
 ::-webkit-scrollbar {
   display: none;
 }
