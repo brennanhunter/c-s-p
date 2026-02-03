@@ -121,6 +121,20 @@ useGSAP(() => {
         <div className="absolute inset-0 z-0">
           <Starfield />
         </div>
+        <div className="absolute inset-0 z-30 pointer-events-none">
+          <div className="absolute w-full h-[2px] bg-gradient-to-r from-transparent via-cyber-cyan to-transparent opacity-30 animate-scan" 
+               style={{ 
+                 boxShadow: '0 0 10px rgba(0, 212, 255, 0.5)',
+                 animation: 'scan 8s linear infinite'
+               }}
+          />
+        </div>
+        <style jsx>{`
+          @keyframes scan {
+            0% { top: -2px; }
+            100% { top: 100%; }
+          }
+        `}</style>
         <motion.div
           className="absolute right-0 lg:right-0 top-0 h-full w-full lg:w-1/2 pointer-events-none z-5"
           initial={{ opacity: 0, x: 60 }}
@@ -140,7 +154,9 @@ useGSAP(() => {
           >
             <motion.h1 
               className="font-newsflash text-6xl md:text-8xl lg:text-9xl mb-6 bg-gradient-to-r from-cyber-cyan to-neon-blue bg-clip-text text-transparent"
-              variants={fadeInUp}
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
               animate={{ scaleY: textScale }}
               transition={{ scaleY: { duration: 0.5, ease: "easeOut" }, duration: 1.2, ease: "easeOut" }}
               style={{ 
@@ -151,7 +167,9 @@ useGSAP(() => {
             </motion.h1>
             <motion.h1 
               className="font-newsflash text-6xl md:text-8xl lg:text-9xl mb-6 bg-gradient-to-r from-neon-blue to-cyber-cyan bg-clip-text text-transparent"
-              variants={fadeInUp}
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
               animate={{ scaleY: textScale }}
               transition={{ scaleY: { duration: 0.5, ease: "easeOut" }, duration: 1.2, ease: "easeOut", delay: 0.2 }}
               style={{ 
@@ -162,7 +180,9 @@ useGSAP(() => {
             </motion.h1>
             <motion.h1 
               className="font-newsflash text-6xl md:text-8xl lg:text-9xl mb-8 bg-gradient-to-r from-cyber-cyan to-electric-blue bg-clip-text text-transparent"
-              variants={fadeInUp}
+              initial={{ opacity: 0, y: 60 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
               animate={{ scaleY: textScale }}
               transition={{ scaleY: { duration: 0.5, ease: "easeOut" }, duration: 1.2, ease: "easeOut", delay: 0.4 }}
               style={{ 
