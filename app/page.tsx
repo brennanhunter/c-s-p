@@ -1,14 +1,14 @@
 
 "use client";
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ReactLenis } from "lenis/react";
 import { motion } from 'framer-motion';
-import Satellite from './components/Satellite';
-import Starfield from './components/Starfield';
+import Hero from './components/Hero';
+import Services from './components/Services';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
@@ -46,19 +46,6 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Home() {
 const lenisRef = useRef<any>(null);
 const containerRef = useRef<HTMLElement>(null);
-const [mouseX, setMouseX] = useState(0.5);
-
-useEffect(() => {
-  const handleMouseMove = (e: MouseEvent) => {
-    const x = e.clientX / window.innerWidth;
-    setMouseX(x);
-  };
-
-  window.addEventListener('mousemove', handleMouseMove);
-  return () => window.removeEventListener('mousemove', handleMouseMove);
-}, []);
-
-  const textScale = 0.7 + (1 - mouseX) * 0.6; // Scale from 0.7 (right) to 1.3 (left)
 
 useEffect(() => {
   function update(time: number) {
@@ -117,177 +104,73 @@ useGSAP(() => {
       ref={containerRef}
       className="grid grid-cols-1"
     >
-      <section className="bg-gradient-to-br from-black via-raisin-black to-black flex flex-col items-center justify-center sticky top-0 min-h-screen py-8 text-white overflow-visible relative">
-        <div className="absolute inset-0 z-0">
-          <Starfield />
-        </div>
-        <div className="absolute inset-0 z-30 pointer-events-none">
-          <div className="absolute w-full h-[2px] bg-gradient-to-r from-transparent via-cyber-cyan to-transparent opacity-30 animate-scan" 
-               style={{ 
-                 boxShadow: '0 0 10px rgba(0, 212, 255, 0.5)',
-                 animation: 'scan 8s linear infinite'
-               }}
-          />
-        </div>
-        <style jsx>{`
-          @keyframes scan {
-            0% { top: -2px; }
-            100% { top: 100%; }
-          }
-        `}</style>
-        <motion.div
-          className="absolute right-0 lg:right-0 top-0 h-full w-full lg:w-1/2 pointer-events-none z-5"
-          initial={{ opacity: 0, x: 60 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-        >
-          <Satellite />
-        </motion.div>
-        <div className="max-w-7xl w-full px-6 z-10 relative">
-          <motion.div 
-            className="text-center lg:text-left lg:w-1/2 bg-raisin-black/10 lg:bg-transparent p-8 lg:p-0 rounded-2xl"
-            variants={staggerChildren}
-            initial="initial"
-            whileInView="whileInView"
-            viewport={{ once: true, margin: "-50px" }}
-          >
-            <motion.h1 
-              className="font-newsflash text-6xl md:text-8xl lg:text-9xl mb-6 bg-gradient-to-r from-cyber-cyan to-neon-blue bg-clip-text text-transparent"
-              initial={{ opacity: 0, y: 60 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              animate={{ scaleY: textScale }}
-              transition={{ scaleY: { duration: 0.5, ease: "easeOut" }, duration: 1.2, ease: "easeOut" }}
-              style={{ 
-                transformOrigin: 'center'
-              }}
-            >
-              SECURE
-            </motion.h1>
-            <motion.h1 
-              className="font-newsflash text-6xl md:text-8xl lg:text-9xl mb-6 bg-gradient-to-r from-neon-blue to-cyber-cyan bg-clip-text text-transparent"
-              initial={{ opacity: 0, y: 60 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              animate={{ scaleY: textScale }}
-              transition={{ scaleY: { duration: 0.5, ease: "easeOut" }, duration: 1.2, ease: "easeOut", delay: 0.2 }}
-              style={{ 
-                transformOrigin: 'center'
-              }}
-            >
-              CONTAIN
-            </motion.h1>
-            <motion.h1 
-              className="font-newsflash text-6xl md:text-8xl lg:text-9xl mb-8 bg-gradient-to-r from-cyber-cyan to-electric-blue bg-clip-text text-transparent"
-              initial={{ opacity: 0, y: 60 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              animate={{ scaleY: textScale }}
-              transition={{ scaleY: { duration: 0.5, ease: "easeOut" }, duration: 1.2, ease: "easeOut", delay: 0.4 }}
-              style={{ 
-                transformOrigin: 'center'
-              }}
-            >
-              PROTECT
-            </motion.h1>
-            <motion.p 
-              className="font-dm text-xl md:text-2xl text-slate-300 mb-8 leading-relaxed"
-              variants={fadeInUp}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
-            >
-              Advanced cybersecurity solutions for the modern digital landscape
-            </motion.p>
-            <motion.div 
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
-              variants={fadeInUp}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
-            >
-              <motion.button 
-                className="px-8 py-4 bg-electric-blue hover:bg-deep-purple rounded-lg font-dm font-semibold text-lg transition-colors shadow-lg"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Get Protected
-              </motion.button>
-              <motion.button 
-                className="px-8 py-4 border-2 border-cyber-cyan hover:bg-cyber-cyan hover:text-raisin-black rounded-lg font-dm font-semibold text-lg transition-colors shadow-lg backdrop-blur-sm bg-raisin-black/50"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Learn More
-              </motion.button>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+      <Hero />
       <section className="bg-gradient-to-br from-charcoal-gray via-finn-purple to-raisin-black flex flex-col items-center justify-center sticky top-0 min-h-screen py-8 text-white">
-        <motion.div 
-          className="text-center max-w-6xl px-6"
-          initial="initial"
-          whileInView="whileInView"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <motion.h2 
-            className="font-newsflash text-4xl md:text-6xl lg:text-7xl mb-12 bg-gradient-to-r from-electric-violet to-neon-pink bg-clip-text text-transparent"
-            {...fadeInUp}
-            transition={{ duration: 1, ease: "easeOut" }}
-          >
-            COMPREHENSIVE DEFENSE
-          </motion.h2>
-          <motion.div 
-            className="grid md:grid-cols-3 gap-8 mb-12"
-            variants={staggerChildren}
-            initial="initial"
-            whileInView="whileInView"
-            viewport={{ once: true, margin: "-100px" }}
-          >
+        <div className="max-w-7xl w-full px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div 
-              className="bg-raisin-black/50 backdrop-blur-sm border border-electric-violet/30 rounded-xl p-8"
-              variants={fadeInLeft}
-              whileHover={{ scale: 1.05, y: -5 }}
-              transition={{ duration: 0.3 }}
+              className="flex items-center justify-center"
+              initial={{ opacity: 0, x: -60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1, ease: "easeOut" }}
             >
-              <div className="text-electric-violet text-4xl mb-4">🛡️</div>
-              <h3 className="font-newsflash text-xl mb-4 text-electric-violet">THREAT DETECTION</h3>
-              <p className="font-dm text-slate-300 leading-relaxed">
-                AI-powered monitoring systems that identify and neutralize threats before they breach your network.
-              </p>
+              <img 
+                src="/images/Planet.jpg" 
+                alt="Cybersecurity Protection" 
+                className="w-full max-w-md lg:max-w-lg rounded-2xl shadow-2xl"
+              />
             </motion.div>
             <motion.div 
-              className="bg-raisin-black/50 backdrop-blur-sm border border-electric-violet/30 rounded-xl p-8"
-              variants={fadeInUp}
-              whileHover={{ scale: 1.05, y: -5 }}
-              transition={{ duration: 0.3 }}
+              className="space-y-8"
+              initial={{ opacity: 0, x: 60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 1, ease: "easeOut" }}
             >
-              <div className="text-electric-violet text-4xl mb-4">🔐</div>
-              <h3 className="font-newsflash text-xl mb-4 text-electric-violet">DATA ENCRYPTION</h3>
-              <p className="font-dm text-slate-300 leading-relaxed">
-                Military-grade encryption protocols ensuring your sensitive data remains protected at all times.
-              </p>
+              <motion.h2 
+                className="font-newsflash text-5xl md:text-6xl lg:text-7xl leading-tight bg-gradient-to-r from-cyber-cyan via-electric-blue to-electric-violet bg-clip-text text-transparent"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+              >
+                Beyond Protection. Beyond Limits.
+              </motion.h2>
+              <motion.p 
+                className="font-dm text-xl md:text-2xl text-slate-200 leading-relaxed font-semibold"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+              >
+                Elite cybersecurity specialists defending the digital frontier.
+              </motion.p>
+              <motion.p 
+                className="font-dm text-lg text-slate-300 leading-relaxed"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
+              >
+                We combine cutting-edge threat intelligence with proactive defense strategies. Our team doesn't just respond to attacks—we predict, prevent, and eliminate threats before they materialize. From penetration testing to 24/7 monitoring, we ensure your infrastructure remains impenetrable.
+              </motion.p>
+              <motion.button 
+                className="px-10 py-5 bg-electric-blue hover:bg-deep-purple rounded-lg font-dm font-semibold text-lg transition-all shadow-xl hover:shadow-2xl"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Discover Our Solutions
+              </motion.button>
             </motion.div>
-            <motion.div 
-              className="bg-raisin-black/50 backdrop-blur-sm border border-electric-violet/30 rounded-xl p-8"
-              variants={fadeInRight}
-              whileHover={{ scale: 1.05, y: -5 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="text-electric-violet text-4xl mb-4">⚡</div>
-              <h3 className="font-newsflash text-xl mb-4 text-electric-violet">RAPID RESPONSE</h3>
-              <p className="font-dm text-slate-300 leading-relaxed">
-                24/7 incident response team ready to contain and eliminate security breaches within minutes.
-              </p>
-            </motion.div>
-          </motion.div>
-          <motion.p 
-            className="font-dm text-xl text-neon-pink"
-            {...fadeInUp}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
-          >
-            Trusted by Fortune 500 companies worldwide
-          </motion.p>
-        </motion.div>
+          </div>
+        </div>
       </section>
+      <Services />
       <section className="bg-gradient-to-br from-raisin-black via-steel-pink to-charcoal-gray flex flex-col items-center justify-center sticky top-0 min-h-screen py-8 text-white">
         <motion.div 
           className="text-center max-w-5xl px-6"
